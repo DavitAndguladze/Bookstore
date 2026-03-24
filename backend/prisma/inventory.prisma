@@ -1,0 +1,8 @@
+model Inventory {
+    bookId    BigInt   @id @map("book_id")
+    book      Book     @relation(fields: [bookId], references: [id])
+    quantity  Int
+    updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+    @@map("inventory")
+}

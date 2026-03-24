@@ -1,0 +1,8 @@
+model Country {
+    id        BigInt    @id @default(autoincrement()) @map("country_id")
+    name      String    @unique @db.VarChar(100)
+    code      String    @unique @db.Char(2)
+    addresses Address[]
+
+    @@map("countries")
+}

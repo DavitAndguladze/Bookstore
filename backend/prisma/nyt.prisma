@@ -1,0 +1,31 @@
+model NytList {
+    id              BigInt        @id @default(autoincrement())
+    listName        String        @map("list_name") @db.VarChar(255)
+    listNameEncoded String        @unique @map("list_name_encoded") @db.VarChar(255)
+    createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz
+    bookNytLists    BookNytList[]
+
+    @@map("nyt_lists")
+}
+
+model BookNytList {
+    bookId    BigInt   @map("book_id")
+    book      Book     @relation(fields: [bookId], references: [id])
+    nytListId BigInt   @map("nyt_list_id")
+    nytList   NytList  @relation(fields: [nytListId], references: [id])
+    rank      Int
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+    @@id([bookId, nytListId])
+    @@map("book_nyt_lists")
+}
+
+model NytBookMapping {
+    bookId    BigInt   @id @map("book_id")
+    book      Book     @relation(fields: [bookId], references: [id])
+    isbn13    String   @db.VarChar(13)
+    isbn10    String   @db.VarChar(10)
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+    @@map("nyt_book_mapping")
+}

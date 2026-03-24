@@ -9,6 +9,8 @@ model User {
     createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz
     updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz
     addresses    Address[]
+    carts        Cart[]
+    orders       Order[]
 
     @@map("users")
 }

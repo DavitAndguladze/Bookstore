@@ -1,0 +1,25 @@
+model Order {
+    id          BigInt      @id @default(autoincrement()) @map("order_id")
+    userId      BigInt      @map("user_id")
+    user        User        @relation(fields: [userId], references: [id])
+    status      String      @db.VarChar(20)
+    totalAmount Decimal     @map("total_amount") @db.Decimal(10, 2)
+    createdAt   DateTime    @default(now()) @map("created_at") @db.Timestamptz
+    orderItems  OrderItem[]
+
+    @@map("orders")
+}
+
+model OrderItem {
+    id        BigInt   @id @default(autoincrement()) @map("order_item_id")
+    orderId   BigInt   @map("order_id")
+    order     Order    @relation(fields: [orderId], references: [id])
+    bookId    BigInt   @map("book_id")
+    book      Book     @relation(fields: [bookId], references: [id])
+    title     String   @db.VarChar(255)
+    price     Decimal  @db.Decimal(10, 2)
+    quantity  Int
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+    @@map("order_items")
+}

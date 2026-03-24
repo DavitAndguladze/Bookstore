@@ -1,0 +1,29 @@
+model Cart {
+    id        BigInt     @id @default(autoincrement())
+    userId    BigInt     @map("user_id")
+    user      User       @relation(fields: [userId], references: [id])
+    status    CartStatus
+    createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz
+    updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamptz
+    cartItems CartItem[]
+
+    @@map("carts")
+}
+
+enum CartStatus {
+    ACTIVE    @map("active")
+    COMPLETED @map("completed")
+}
+
+model CartItem {
+    id           BigInt   @id @default(autoincrement()) @map("cart_item_id")
+    cartId       BigInt   @map("cart_id")
+    cart         Cart     @relation(fields: [cartId], references: [id])
+    bookId       BigInt   @map("book_id")
+    book         Book     @relation(fields: [bookId], references: [id])
+    quantity     Int
+    priceAtAdded Decimal  @map("price_at_added") @db.Decimal(10, 2)
+    createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+    @@map("cart_items")
+}

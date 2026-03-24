@@ -1,0 +1,44 @@
+model Book {
+    id               BigInt            @id @default(autoincrement()) @map("book_id")
+    title            String            @db.VarChar(255)
+    author           String
+    publisher        String            @db.VarChar(255)
+    description      String
+    bookImageUrl     String            @map("book_image_url")
+    productType      ProductType       @map("product_type")
+    price            Decimal           @db.Decimal(10, 2)
+    isActive         Boolean           @default(true) @map("is_active")
+    visibility       Visibility        @default(DRAFT)
+    createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz
+    updatedAt        DateTime          @updatedAt @map("updated_at") @db.Timestamptz
+    bookGenres       BookGenre[]
+    inventory        Inventory?
+    bookNytList      BookNytList[]
+    nytBookMapping   NytBookMapping?
+    homepageFeatures HomepageFeature[]
+    cartItems        CartItem[]
+    orderItems       OrderItem[]
+
+    @@map("books")
+}
+
+enum ProductType {
+    PHYSICAL @map("physical")
+    DIGITAL  @map("digital")
+}
+
+enum Visibility {
+    DRAFT     @map("draft")
+    PUBLISHED @map("published")
+    HIDDEN    @map("hidden")
+}
+
+model BookGenre {
+    bookId  BigInt @map("book_id")
+    book    Book   @relation(fields: [bookId], references: [id])
+    genreId BigInt @map("genre_id")
+    genre   Genre  @relation(fields: [genreId], references: [id])
+
+    @@id([bookId, genreId])
+    @@map("book_genres")
+}

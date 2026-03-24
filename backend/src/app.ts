@@ -1,9 +1,7 @@
-import express from 'express'
-import bookRouter from './modules/books/books.routes.js'
-const app = express()
+import express from 'express';
 
-app.use(express.json())
+const app = express();
 
-app.use("/books", bookRouter);
+app.use(express.json());
 
-export default app
+export default app;

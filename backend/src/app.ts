@@ -1,9 +1,16 @@
-import express from 'express'
-import bookRouter from './modules/books/books.routes.js'
-const app = express()
+import express from 'express';
+import authRoutes from './modules/auth/auth.routes';
+import { errorHandler } from './shared/middleware/error.middleware';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger';
 
-app.use(express.json())
+const app = express();
 
-app.use("/books", bookRouter);
+app.use(express.json());
 
-export default app
+app.use('/api/auth', authRoutes);
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+app.use(errorHandler);
+export default app;

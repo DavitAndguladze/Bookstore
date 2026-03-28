@@ -26,7 +26,7 @@ export const register = async (data: RegisterRequestBody) => {
     return {
         token, 
         user: {
-            id: user.id,
+            id: user.id.toString(),
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
@@ -59,7 +59,7 @@ export const login = async (data: LoginRequestBody) => {
     return {
         token,
         user: {
-            id: user.id,
+            id: user.id.toString(),
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,

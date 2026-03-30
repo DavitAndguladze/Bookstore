@@ -4,12 +4,15 @@ import { errorHandler } from './shared/middleware/error.middleware';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger';
 import bookRoutes from './modules/books/books.routes';
+import cartRoutes from './modules/cart/cart.routes';
 const app = express();
 
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/books',bookRoutes);
+app.use('/api/cart', cartRoutes);
+
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 

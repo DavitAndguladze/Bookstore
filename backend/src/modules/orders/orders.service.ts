@@ -26,7 +26,11 @@ export const placeOrder = async (userId: bigint) => {
   }
 
   await OrdersRepository.updateCartStatus(activeCart.id, CartStatus.COMPLETED);
-  return order;
+  return {
+    ...order,
+    id: order.id.toString(),
+    userId: order.userId.toString(),
+  };
 };
 
 export const getMyOrders = async (userId: bigint) => {

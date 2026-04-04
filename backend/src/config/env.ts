@@ -13,5 +13,6 @@ export default {
     DATABASE_URL: getRequiredEnvVar("DATABASE_URL"),
     JWT_SECRET: getRequiredEnvVar("JWT_SECRET"),
     JWT_EXPIRES_IN: getRequiredEnvVar("JWT_EXPIRES_IN"),
+    NYT_API_KEY: getRequiredEnvVar("NYT_API_KEY"),
     PORT: Number(process.env.PORT) || 3000,
 }

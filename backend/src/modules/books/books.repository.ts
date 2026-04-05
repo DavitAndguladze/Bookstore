@@ -17,6 +17,8 @@ export const createBook = async(data: {
     title: string,
     author: string,
     publisher: string,
+    isbn13: string,
+    isbn10: string | null,
     description: string,
     bookImageUrl: string,
     productType: 'PHYSICAL' | 'DIGITAL';

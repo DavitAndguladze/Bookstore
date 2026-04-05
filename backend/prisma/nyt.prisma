@@ -19,13 +19,3 @@ model BookNytList {
     @@id([bookId, nytListId])
     @@map("book_nyt_lists")
 }
-
-model NytBookMapping {
-    bookId    BigInt   @id @map("book_id")
-    book      Book     @relation(fields: [bookId], references: [id])
-    isbn13    String   @db.VarChar(13)
-    isbn10    String   @db.VarChar(10)
-    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
-
-    @@map("nyt_book_mapping")
-}

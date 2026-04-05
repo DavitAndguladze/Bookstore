@@ -1,6 +1,8 @@
 import env from "../../config/env";
 import * as NytRepository from "./nyt.repository";
+import * as BookRepository from "../books/books.repository";
 import { AppError } from "../../shared/middleware/error.middleware";
+import { Prisma } from "../../generated/prisma";
 
 export const getAllLists = async () => {
     const lists = await NytRepository.findAllNytLists();
@@ -30,12 +32,30 @@ export const syncNytList = async (listNameEncoded: string): Promise<void> => {
 
     const data = await response.json();
     const {list_name, list_name_encoded, books } = data.results
-    const nytList = await NytRepository.findOrCreateNytList(list_name, list_name_encoded);
+const nytList = await NytRepository.findOrCreateNytList(list_name, list_name_encoded);
 
     for (const book of books) {
-        const mapping = await NytRepository.findBookByIsbn(book.primary_isbn13, book.primary_isbn10);
-        if (!mapping) continue
-        await NytRepository.upsertBookNytList(mapping.bookId, nytList.id, book.rank)
+        try {
+            let match = await NytRepository.findBookByIsbn(book.primary_isbn13, book.primary_isbn10)
+
+            if (!match) {
+                match = await BookRepository.createBook({
+                    title: book.title,
+                    author: book.author,
+                    publisher: book.publisher,
+                    isbn13: book.primary_isbn13,
+                    isbn10: book.primary_isbn10 || null,
+                    description: book.description,
+                    bookImageUrl: book.book_image,
+                    productType: 'PHYSICAL',
+                    price: new Prisma.Decimal(0),
+                })
+            }
+
+            await NytRepository.upsertBookNytList(match.id, nytList.id, book.rank)
+        } catch (error) {
+            console.error(`Failed to sync book "${book.title}":`, error)
+        }
     }
 
 }

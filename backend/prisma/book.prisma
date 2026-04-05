@@ -3,6 +3,8 @@ model Book {
     title            String            @db.VarChar(255)
     author           String
     publisher        String            @db.VarChar(255)
+    isbn13           String            @unique @db.VarChar(13)
+    isbn10           String?           @db.VarChar(10)
     description      String
     bookImageUrl     String            @map("book_image_url")
     productType      ProductType       @map("product_type")
@@ -14,7 +16,6 @@ model Book {
     bookGenres       BookGenre[]
     inventory        Inventory?
     bookNytList      BookNytList[]
-    nytBookMapping   NytBookMapping?
     homepageFeatures HomepageFeature[]
     cartItems        CartItem[]
     orderItems       OrderItem[]

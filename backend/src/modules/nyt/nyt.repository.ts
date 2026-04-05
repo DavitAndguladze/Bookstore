@@ -1,5 +1,4 @@
 import { prisma } from "../../config/db";
-import { Prisma } from "../../generated/prisma";
 
 export const findOrCreateNytList = async (listName: string, listNameEncoded: string) => {
     // Upsert first uses the where clause to check if the list already exists.
@@ -13,14 +12,13 @@ export const findOrCreateNytList = async (listName: string, listNameEncoded: str
 }
 
 export const findBookByIsbn = async (isbn13: string, isbn10: string) => {
-    return prisma.nytBookMapping.findFirst({
+    return prisma.book.findFirst({
         where: {
             OR: [
                 {isbn13},
                 {isbn10},
             ]
-        },
-        include: { book: true}
+        }
     })
 }
 

@@ -2,8 +2,14 @@ import * as BookRepository from './books.repository';
 import { AppError } from '../../shared/middleware/error.middleware';
 import { Prisma } from '../../generated/prisma';
 
-export const getAllBooks = async () => {
-    const books = await BookRepository.findAllBooks();
+export const getAllBooks = async (filters: {
+    title?: string;
+    author?: string;
+    genre?: string;
+    minPrice?: number;
+    maxPrice?: number;
+}) => {
+    const books = await BookRepository.findAllBooks(filters);
     return books.map((book) => ({ ...book, id: book.id.toString() }));
 }
 

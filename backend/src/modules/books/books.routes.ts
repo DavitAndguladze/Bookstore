@@ -10,6 +10,32 @@ const router = Router();
  *   get:
  *     summary: Get all published books
  *     tags: [Books]
+ *     parameters:
+ *       - in: query
+ *         name: title
+ *         schema:
+ *           type: string
+ *         description: Filter by title (partial match)
+ *       - in: query
+ *         name: author
+ *         schema:
+ *           type: string
+ *         description: Filter by author (partial match)
+ *       - in: query
+ *         name: genre
+ *         schema:
+ *           type: string
+ *         description: Filter by genre (exact match)
+ *       - in: query
+ *         name: minPrice
+ *         schema:
+ *           type: number
+ *         description: Filter by minimum price
+ *       - in: query
+ *         name: maxPrice
+ *         schema:
+ *           type: number
+ *         description: Filter by maximum price
  *     responses:
  *       200:
  *         description: List of all published books

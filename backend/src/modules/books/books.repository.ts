@@ -1,9 +1,28 @@
 import { prisma } from "../../config/db";
 import { Prisma } from "../../generated/prisma";
 
-export const findAllBooks = async() => {
+export const findAllBooks = async(filters: {
+    title?: string;
+    author?: string;
+    genre?: string;
+    minPrice?: number;
+    maxPrice?: number;
+}) => {
     return prisma.book.findMany({
-        where: { visibility: 'PUBLISHED'}
+        where: {
+            visibility: 'PUBLISHED',
+            title: filters.title ? { contains: filters.title, mode: 'insensitive'} : undefined,
+            author: filters.author ? {contains: filters.author, mode: 'insensitive'} : undefined,
+            bookGenres: filters.genre ? {
+                some: {
+                    genre: { name: filters.genre }
+                } 
+            } : undefined,
+            price: {
+                gte: filters.minPrice ? new Prisma.Decimal(filters.minPrice) : undefined,
+                lte: filters.maxPrice ? new Prisma.Decimal(filters.maxPrice) : undefined,
+            }
+        }
     })
 }
 

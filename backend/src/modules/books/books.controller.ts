@@ -1,9 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import * as BooksService from './books.service';
 
-export const getAllBooksHandler = async (_req: Request, res: Response, next: NextFunction) => {
+export const getAllBooksHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const books = await BooksService.getAllBooks();
+        const { title, author, genre, minPrice, maxPrice } = req.query;
+        const books = await BooksService.getAllBooks({
+            title: title as string | undefined,
+            author: author as string | undefined,
+            genre: genre as string | undefined,
+            minPrice: minPrice ? Number(minPrice) : undefined,
+            maxPrice: maxPrice ? Number(maxPrice) : undefined,
+        });
         res.status(200).json(books);
     } catch (error) {
         next(error);

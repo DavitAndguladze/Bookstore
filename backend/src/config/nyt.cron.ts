@@ -6,11 +6,9 @@ cron.schedule("0 0 * * 0", async () => {
 
     const lists = [
         "hardcover-fiction",
-        "paperback-mass-market",
         "combined-print-and-e-book-fiction",
         "audio-fiction",
         "hardcover-nonfiction",
-        "paperback-nonfiction",
         "combined-print-and-e-book-nonfiction",
         "audio-nonfiction",
         "young-adult-hardcover"
@@ -23,6 +21,7 @@ cron.schedule("0 0 * * 0", async () => {
         } catch (error) {
             console.error(`Failed to sync ${list}:`, error)
         }
+        await new Promise(resolve => setTimeout(resolve, 7000))
     }
 
     console.log("NYT sync complete:", new Date().toISOString())

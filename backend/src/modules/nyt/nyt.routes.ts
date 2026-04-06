@@ -64,4 +64,41 @@ router.post("/sync/:listNameEncoded", async (req, res, next) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/nyt/sync-all:
+ *   post:
+ *     summary: Manually trigger a sync for all NYT lists (for testing)
+ *     tags: [NYT]
+ *     responses:
+ *       200:
+ *         description: All lists synced
+ */
+router.post("/sync-all", async (_req, res, next) => {
+    try {
+        const lists = [
+            "hardcover-fiction",
+            "combined-print-and-e-book-fiction",
+            "audio-fiction",
+            "hardcover-nonfiction",
+            "combined-print-and-e-book-nonfiction",
+            "audio-nonfiction",
+            "young-adult-hardcover"
+        ]
+        for (const list of lists) {
+            try {
+                await NytService.syncNytList(list)
+                console.log(`Synced: ${list}`)
+            } catch (error) {
+                console.error(`Failed: ${list}`, error)
+            }
+            await new Promise(resolve => setTimeout(resolve, 7000))
+        }
+        res.status(200).json({ message: "All lists synced" })
+    } catch (error) {
+        next(error)
+    }
+})
+
+
 export default router;

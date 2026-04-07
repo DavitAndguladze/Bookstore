@@ -11,6 +11,7 @@ model User {
     addresses    Address[]
     carts        Cart[]
     orders       Order[]
+    reviews      Review[]
 
     @@map("users")
 }

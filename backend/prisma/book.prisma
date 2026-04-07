@@ -19,6 +19,7 @@ model Book {
     homepageFeatures HomepageFeature[]
     cartItems        CartItem[]
     orderItems       OrderItem[]
+    reviews          Review[]
 
     @@map("books")
 }

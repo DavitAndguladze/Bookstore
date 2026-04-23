@@ -10,8 +10,10 @@ import nytRoutes from "./modules/nyt/nyt.routes";
 import reviewRoutes from "./modules/reviews/reviews.routes";
 import homepageRoutes from "./modules/homepage/homepage.routes";
 import addressRoutes from "./modules/address/address.routes";
+import paymentRoutes from "./modules/payments/payments.routes";
 const app = express();
 
+app.use("/api/payments/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
@@ -22,6 +24,7 @@ app.use("/api/nyt", nytRoutes);
 app.use("/api/books/:id/reviews", reviewRoutes);
 app.use("/api/homepage", homepageRoutes);
 app.use("/api/addresses", addressRoutes);
+app.use("/api/payments", paymentRoutes);
 
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
